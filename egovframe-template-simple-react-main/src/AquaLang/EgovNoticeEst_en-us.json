@@ -1,0 +1,24 @@
+{
+    "alalertMsg": "The selected Fish Management Station has been deleted",
+    "tit_1" :"Site Management",
+    "tit_2" :"Fish Management Station",
+    "author" :"Author" ,
+    "titlename" : "Title",
+    "number" : "No",
+    "dateCreation" :"Date Creation",
+    "viewCount" :"View Count",
+    "nttSj" :"Fish ID",
+    "bbsTyACode" :"Size (Cm)",
+    "bbsTyBCode" :"Average Size (Cm)",
+    "bbsTyCCode" :"Time entered (YYYY.MM.DD)",
+    "bbsTyDCode" :"Shipment (YYYY.MM.DD)",
+    "bbsTyECode" :"Administered feed (Kg)",
+    "preparedFeed" :"Prepared feed (Kg)",
+    "editBtn" : "Edit",
+    "deleteBtn" : "Delete",
+    "listBtn" : "List",
+    "registBtn" : "Registration",
+    "saveBtn" : "Save",
+    "no_data" : "No search results exist"
+
+}

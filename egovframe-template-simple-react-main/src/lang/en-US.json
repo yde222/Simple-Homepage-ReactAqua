@@ -1,0 +1,6 @@
+{
+  "title": "React Intl",
+  "info": "The current language is {locale}.",
+  "label": "Language",
+  "button": "Save"
+}

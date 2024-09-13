@@ -1,0 +1,7 @@
+ {
+ "button" :"Save",
+ "label": "Language",
+ "login.UserName" : ",has logged in as an administrator.",
+  "login.logingbtn" : "login",
+  "login.logOutbtn" : "Sign out"
+ }

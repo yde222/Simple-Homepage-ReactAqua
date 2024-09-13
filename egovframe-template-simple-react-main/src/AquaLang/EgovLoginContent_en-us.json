@@ -1,0 +1,12 @@
+{
+  "login.title": "login",
+  "login.logingbtn" :"login",
+  "login.CREATE" :"Sign Up",
+  "login.MODIFY" : "Find Password",
+  "login.content1" : "This is a login page for the e-Government Standard Framework web-site.",
+  "login.content2" : "All services are available without restriction by logging in.",
+  "login.content3" : "The password can be used by mixing 8-12 characters of English case/case letters, numbers, and special characters.",
+  "login.content4" : "If the password for an easy password or a frequently used site is the same, it is easy to steal, so it is recommended to change it periodically.",
+  "login.saveid" : "saveID",
+  "login": "login"
+}

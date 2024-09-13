@@ -1,0 +1,15 @@
+
+.camera-section {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.temperature-label {
+    margin-right: 5px;
+}
+
+.temperature-display {
+    border: 1px solid black;
+    padding: 5px;
+}

@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loginDAO">
+
+
+	<!-- 로그인 처리를 위한 resultMap -->
+	<resultMap id="login" type="egovframework.com.cmm.LoginVO">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="ihidNum" column="ihidNum"/>
+		<result property="replyPosblAt" column="replyPosblAt"/>
+		<result property="email" column="email"/>
+		<result property="password" column="password"/>
+		<result property="userSe" column="userSe"/>
+		<result property="orgnztId" column="orgnztId"/>
+		<result property="uniqId" column="uniqId"/>		
+	</resultMap>
+
+<!-- 	<resultMap id="loginList" type="egovframework.com.cmm.LoginVO"> -->
+<!-- 		<result property="id" column="id"/> -->
+<!-- 		<result property="name" column="name"/> -->
+<!-- 		<result property="ihidNum" column="ihidNum"/> -->
+<!-- 		<result property="email" column="email"/> -->
+<!-- 		<result property="password" column="password"/> -->
+<!-- 		<result property="userSe" column="userSe"/> -->
+<!-- 		<result property="orgnztId" column="orgnztId"/> -->
+<!-- 		<result property="uniqId" column="uniqId"/>		 -->
+<!-- 	</resultMap> -->
+	
+<!-- 로그인 일람처리를 위한 resultMap --> 
+<!-- 	<resultMap id="boardList" type="egovframework.let.cop.bbs.service.BoardVO"> -->
+<!-- 		<result property="bbsId" column="BBS_ID"/> -->
+<!-- 		<result property="nttId" column="NTT_ID"/> -->
+<!-- 		<result property="nttSj" column="NTT_SJ"/> -->
+<!-- 		<result property="frstRegisterId" column="FRST_REGISTER_ID"/> -->
+<!-- 		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/> -->
+<!-- 		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/> -->
+<!-- 		<result property="inqireCo" column="RDCNT"/> -->
+<!-- 		<result property="parnts" column="PARNTSCTT_NO"/> -->
+<!-- 		<result property="replyAt" column="ANSWER_AT"/>		 -->
+<!-- 		<result property="replyLc" column="ANSWER_LC"/> -->
+<!-- 		<result property="useAt" column="USE_AT"/> -->
+<!-- 		<result property="atchFileId" column="ATCH_FILE_ID"/> -->
+<!-- 		<result property="ntceBgnde" column="NTCE_BGNDE"/> -->
+<!-- 		<result property="ntceEndde" column="NTCE_ENDDE"/> -->
+<!-- 	</resultMap> -->
+
+	
+	<!-- 아이디 찾기를 위한 resultMap 
+	<resultMap id="id" class="egovframework.com.cmm.LoginVO">
+		<result property="id" column="id" columnIndex="1"/>
+	</resultMap>
+	-->
+	<!-- 비밀번호 처리를 위한 resultMap 
+	<resultMap id="password" class="egovframework.com.cmm.LoginVO">
+		<result property="password" column="password" columnIndex="1"/>
+	</resultMap>
+	-->
+	<!-- 일반 로그인 -->
+	<select id="actionLogin" resultMap="login">
+		<if test="userSe == &quot;USR&quot;">
+			
+            SELECT EMPLYR_ID AS id
+                 , USER_NM AS name
+                 , PASSWORD AS password
+                 , IHIDNUM AS ihidNum
+                 , EMAIL_ADRES AS email
+                 , 'USR' AS userSe
+                 , ORGNZT_ID AS orgnztId
+                 , ESNTL_ID AS uniqId
+				 , EMPL_NO AS replyPosblAt
+              FROM LETTNEMPLYRINFO
+             WHERE EMPLYR_ID = #{id}
+               AND PASSWORD = #{password}
+               AND EMPLYR_STTUS_CODE = 'P'
+			
+		</if>
+	</select>
+
+	<!-- 일반 로그인(사용자갱신용) -->
+	<select id="actionLoginUpdate" resultMap="login">
+			
+            SELECT EMPLYR_ID AS id
+                 , USER_NM AS name
+                 , PASSWORD AS password
+                 , IHIDNUM AS ihidNum
+                 , EMAIL_ADRES AS email
+                 , 'USR' AS userSe
+                 , ORGNZT_ID AS orgnztId
+                 , ESNTL_ID AS uniqId
+				 , EMPL_NO AS replyPosblAt
+              FROM LETTNEMPLYRINFO
+             WHERE EMPLYR_ID = #{email}
+               AND PASSWORD = #{passwordHint}
+               AND EMPLYR_STTUS_CODE = 'P'
+			
+	</select>
+	
+	<!-- 인증서 로그인
+	<select id="actionCrtfctLogin" resultMap="login">
+		<![CDATA[
+		SELECT emplyr_id AS id
+		     , USER_NM AS name
+		     , password AS password
+		     , ihidnum AS ihidNum
+		     , email_adres AS email
+		     , 'USR' AS userSe
+		     , orgnzt_id AS orgnztId
+		     , ESNTL_ID AS uniqId
+		  FROM LETTNEMPLYRINFO
+		 WHERE sub_dn = #{dn}
+		]]>
+	</select>
+	 -->
+	<!-- 아이디 찾기
+	<select id="searchId" resultMap="id">
+		<isEqual property="userSe" compareValue="GNR">
+			<![CDATA[
+			SELECT mber_id AS id
+			  FROM LETTNGNRLMBER
+			 WHERE mber_nm = #{name}
+			   AND mber_email_adres = #{email}
+			   AND mber_sttus = 'P'
+			]]>
+		</isEqual>
+		<isEqual property="userSe" compareValue="ENT">
+			<![CDATA[
+			SELECT entrprsmber_id AS id
+			  FROM LETTNENTRPRSMBER
+			 WHERE cmpny_nm = #{name}
+			   AND applcnt_email_adres = #{email}
+			   AND entrprs_mber_sttus = 'P'
+			]]>
+		</isEqual>
+		<isEqual property="userSe" compareValue="USR">
+			<![CDATA[
+			SELECT emplyr_id AS id
+			  FROM LETTNEMPLYRINFO
+			 WHERE USER_NM = #{name}
+			   AND email_adres = #{email}
+			   AND emplyr_sttus_code = 'P'
+			]]>
+		</isEqual>
+	</select>
+	 -->
+	 
+	<select id="searchId"  resultMap="login">
+			SELECT emplyr_id AS id 
+                 , PASSWORD AS password
+			  FROM LETTNEMPLYRINFO
+			 WHERE 
+			   emplyr_id = #{email}
+			   AND emplyr_sttus_code = 'P'
+	</select>
+
+	<!-- 비밀번호 찾기 
+	<select id="searchPassword" resultMap="password">
+		<isEqual property="userSe" compareValue="GNR">
+			<![CDATA[
+			SELECT password AS password
+			  FROM LETTNGNRLMBER
+			 WHERE mber_id = #{id}
+			   AND mber_nm = #{name}
+			   AND mber_email_adres = #{email}
+			   AND password_hint = #{passwordHint}
+			   AND password_cnsr = #{passwordCnsr}
+			   AND mber_sttus = 'P'
+			]]>
+		</isEqual>
+		<isEqual property="userSe" compareValue="ENT">
+			<![CDATA[
+			SELECT entrprs_mber_password AS password
+			  FROM LETTNENTRPRSMBER
+			 WHERE entrprsmber_id = #{id}
+			   AND cmpny_nm = #{name}
+			   AND applcnt_email_adres = #{email}
+			   AND entrprs_mber_password_hint = #{passwordHint}
+			   AND entrprs_mber_password_cnsr = #{passwordCnsr}
+			   AND entrprs_mber_sttus = 'P'
+			]]>
+		</isEqual>
+		<isEqual property="userSe" compareValue="USR">
+			<![CDATA[
+			SELECT password AS password
+			  FROM LETTNEMPLYRINFO
+			 WHERE emplyr_id = #{id}
+			   AND USER_NM = #{name}
+			   AND email_adres = #{email}
+			   AND password_hint = #{passwordHint}
+			   AND password_cnsr = #{passwordCnsr}
+			   AND emplyr_sttus_code = 'P'
+			]]>
+		</isEqual>
+	</select>
+	-->
+	<!-- 변경된 비밀번호를 저장 
+	<update id="updatePassword">
+		<isEqual property="userSe" compareValue="GNR">
+			<![CDATA[
+			UPDATE LETTNGNRLMBER
+			   SET password = #{password}
+			 WHERE mber_id = #{id}
+			]]>
+		</isEqual>
+		<isEqual property="userSe" compareValue="ENT">
+			<![CDATA[
+			UPDATE LETTNENTRPRSMBER
+			   SET entrprs_mber_password = #{password}
+			 WHERE entrprsmber_id = #{id}
+			]]>
+		</isEqual>
+		<isEqual property="userSe" compareValue="USR">
+			<![CDATA[
+			UPDATE LETTNEMPLYRINFO
+			   SET password = #{password}
+			 WHERE emplyr_id = #{id}
+			]]>
+		</isEqual>
+	</update>
+	-->
+	
+	<!-- 로그인 사용자 추가, 김평권 
+	INSERT INTO LETTNEMPLYRINFO VALUES('admin','ORGNZT_0000000000000','관리자','JfQ7FIatlaE5jj7rPYO8QBABX8yb7bNbQy4AKY1QIfc=','','',
+	'F','','','관리자 주소','','','','','','','','','','','','GROUP_00000000000000','00000000','P','USRCNFRM_00000000000','','2011-08-31 00:00:00.000000000')
+	aqua에서는 empl_no를 무조건 'Y',,,별도 인증이 없으므로
+	-->
+	<insert id="insertLogin" parameterType="egovframework.com.cmm.LoginVO">
+		
+			 INSERT INTO LETTNEMPLYRINFO VALUES(#{email},'ORGNZT_0000000000000',#{name},#{password},'Y',
+			 '','F','','','관리자 주소','','','','','','','','','','','','GROUP_00000000000000','00000000','P',#{email},#{ihidNum},CURRENT_TIMESTAMP)
+			 		
+	</insert>
+
+	<!-- 로그인 사용자 변경, 김평권 Smart aquaform_v0.9_1022, 비번변경과 회원정보변경 2종류(하나로 통일,,,비번, 이름,전화번호)
+	-->
+ 	<update id="updatePwLogin" parameterType="egovframework.com.cmm.LoginVO">
+ 		
+			UPDATE LETTNEMPLYRINFO SET 
+				PASSWORD = #{password},
+				SBSCRB_DE = SYSDATE()
+ 			WHERE EMPLYR_STTUS_CODE = 'P' AND GROUP_ID = 'GROUP_00000000000000'
+				AND
+				EMPLYR_ID = #{email}	
+ 		
+ 	</update>
+	
+
+ 	<update id="updateLogin" parameterType="egovframework.com.cmm.LoginVO">
+ 		
+			UPDATE LETTNEMPLYRINFO SET 
+				CRTFC_DN_VALUE = #{ihidNum},
+				USER_NM = #{name},
+				PASSWORD = #{password},
+				SBSCRB_DE = SYSDATE()
+ 			WHERE EMPLYR_STTUS_CODE = 'P' AND GROUP_ID = 'GROUP_00000000000000'
+				AND
+				EMPLYR_ID = #{email}	
+ 		
+ 	</update>
+	
+				
+<!-- 	<select id="selectBoardLoginArticleList" parameterType="egovframework.let.cop.bbs.service.BoardVO" resultMap="boardList"> -->
+	<select id="selectBoardLoginArticleList" parameterType="egovframework.com.cmm.LoginVO" resultMap="login">
+		
+<!-- 			SELECT -->
+<!-- 				a.NTT_ID, a.NTT_SJ, a.FRST_REGISTER_ID, IFNULL(b.USER_NM, a.NTCR_NM) as FRST_REGISTER_NM, -->
+<!-- 				DATE_FORMAT(a.FRST_REGIST_PNTTM, '%Y-%m-%d') as FRST_REGIST_PNTTM, -->
+<!-- 				a.RDCNT, a.PARNTSCTT_NO, a.ANSWER_AT, a.ANSWER_LC, a.USE_AT, a.ATCH_FILE_ID, -->
+<!-- 				a.BBS_ID, a.NTCE_BGNDE, a.NTCE_ENDDE -->
+<!-- 			FROM -->
+<!-- 				LETTNBBS a -->
+<!-- 			LEFT OUTER JOIN  -->
+<!-- 				COMVNUSERMASTER b -->
+<!-- 			ON a.FRST_REGISTER_ID = b.ESNTL_ID  -->
+<!-- 			WHERE -->
+<!-- 				a.USE_AT = 'Y' -->
+<!-- 			AND -->
+<!-- 				a.BBS_ID = #{bbsId} -->
+
+			SELECT 
+				a.EMPLYR_ID as email, a.USER_NM as name, a.CRTFC_DN_VALUE as ihidNum,
+				DATE_FORMAT(a.SBSCRB_DE, '%Y-%m-%d') as FRST_REGIST_PNTTM
+ 			FROM LETTNEMPLYRINFO a  WHERE a.EMPLYR_STTUS_CODE = 'P' AND a.GROUP_ID = 'GROUP_00000000000000'
+		
+			<if test="searchCnd == 0">AND
+					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>
+			<if test="searchCnd == 1">AND
+					a.EMPLYR_ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>	
+			<if test="searchCnd == 2">AND
+					a.CRTFC_DN_VALUE LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>				
+					
+<!-- 			ORDER BY a.SORT_ORDR DESC, NTT_NO ASC -->
+			ORDER BY a.EMPLYR_ID DESC
+			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+						
+	</select>	
+	
+	<select id="selectBoardLoginArticleListCnt" parameterType="egovframework.com.cmm.LoginVO" resultType="java.lang.Integer">
+		
+<!-- 			SELECT -->
+<!-- 				COUNT(a.NTT_ID) -->
+<!-- 			FROM -->
+<!-- 				LETTNBBS a -->
+<!-- 			LEFT OUTER JOIN  -->
+<!-- 				COMVNUSERMASTER b -->
+<!-- 			ON a.FRST_REGISTER_ID = b.ESNTL_ID  -->
+<!-- 			WHERE -->
+<!-- 				a.USE_AT = 'Y' -->
+<!-- 			AND -->
+<!-- 				a.BBS_ID = #{bbsId} -->
+
+			select 	COUNT(a.EMPLYR_ID)	
+ 			FROM LETTNEMPLYRINFO a  WHERE a.EMPLYR_STTUS_CODE = 'P' AND a.GROUP_ID = 'GROUP_00000000000000'
+			<if test="searchCnd == 0">AND
+					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>
+			<if test="searchCnd == 1">AND
+					a.EMPLYR_ID LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>	
+			<if test="searchCnd == 2">AND
+					a.CRTFC_DN_VALUE LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>				
+	</select>	
+	
+		<select id="selectBoardLoginArticle" parameterType="egovframework.com.cmm.LoginVO" resultMap="login">
+		
+			SELECT 
+				a.EMPLYR_ID as email, 
+				a.USER_NM as name, 
+				a.CRTFC_DN_VALUE as ihidNum,
+				a.EMPL_NO as replyPosblAt,
+				DATE_FORMAT(a.SBSCRB_DE, '%Y-%m-%d') as FRST_REGIST_PNTTM
+ 			FROM LETTNEMPLYRINFO a  
+ 			WHERE a.EMPLYR_STTUS_CODE = 'P' AND a.GROUP_ID = 'GROUP_00000000000000'
+				AND
+				a.EMPLYR_ID = #{email}	
+						
+	</select> 
+ 
+ 	<update id="updateBoardLoginArticle" parameterType="egovframework.com.cmm.LoginVO">
+ 		
+			UPDATE LETTNEMPLYRINFO SET 
+				EMPL_NO = #{replyPosblAt},
+				SBSCRB_DE = SYSDATE()
+ 			WHERE EMPLYR_STTUS_CODE = 'P' AND GROUP_ID = 'GROUP_00000000000000'
+				AND
+				EMPLYR_ID = #{email}	
+ 		
+ 	</update>
+
+ 	<delete id="deleteBoardLoginArticle" parameterType="egovframework.com.cmm.LoginVO">
+ 		
+			DELETE FROM LETTNEMPLYRINFO a
+			WHERE
+				a.EMPLYR_ID = #{email}	
+ 		
+ 	</delete>
+
+	
+	
+</mapper>

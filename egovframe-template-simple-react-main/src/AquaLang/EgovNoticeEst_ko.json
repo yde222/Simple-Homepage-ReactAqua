@@ -1,0 +1,24 @@
+{
+    "alalertMsg": "선택된 물고기 대장이 삭제되었습니다",
+    "tit_1" : "사이트 관리",
+    "tit_2" : "물고기 대장",
+    "author" : "작성자",
+    "titlename" : "제목",
+    "number" : "번호",
+    "dateCreation" : "작성일",
+    "viewCount" : "조회수",
+    "nttSj" : "물고기 ID",
+    "bbsTyACode" : "사이즈 (Cm)",
+    "bbsTyBCode" : "평균 (Cm)",
+    "bbsTyCCode" : "입식 (YYYY.MM.DD)",
+    "bbsTyDCode" : "출하 (YYYY.MM.DD)",
+    "bbsTyECode" : "투여사료 (Kg)",
+    "preparedFeed" : "준비사료 (Kg)",
+    "editBtn" : "수정",
+    "deleteBtn" : "삭제",
+    "listBtn" : "목록",
+    "registBtn" : "등록",
+    "saveBtn" : "저장",
+    "no_data" : "검색된 결과가 존재 하지 않습니다"
+}
+

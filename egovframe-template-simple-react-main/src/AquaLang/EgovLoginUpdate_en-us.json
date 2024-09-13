@@ -1,0 +1,12 @@
+ {
+ "tit_1" : "login",
+ "tit_2" : "Change password, member name, and phone number",
+ "name" : "name",
+ "sendCodeButton" : "Send authentication number",
+ "email" : "ID(E-mail)",
+ "password" : "new password", 
+ "passwordCnsr":"new Confirm Password",
+ "certificationNum" : "Authentication Code(6-digit)",
+ "ihidNum" : "Phone Number",
+ "SignUpbtn" : "Change Password"
+ }

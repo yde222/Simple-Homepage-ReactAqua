@@ -1,0 +1,12 @@
+ {
+ "tit_1" : "login",
+ "tit_2" : "Sign Up",
+ "name" : "name",
+ "sendCodeButton" : "Send authentication number",
+ "email" : "ID(E-mail)",
+ "password" : "password", 
+ "passwordCnsr":"Confirm Password",
+ "certificationNum" : "Authentication Code(6-digit)",
+ "ihidNum" : "Phone Number",
+ "SignUpbtn" : "Sign Up"
+ }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FisheryDAO">
+
+
+	<resultMap id="fisheryList" type="egovframework.camera.service.FisheryVO">
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="tempdate" column="tempdate"/>
+		<result property="temp" column="temp"/>
+	</resultMap>
+
+ 	
+	<select id="selectFisheryList"  parameterType="egovframework.camera.service.FisheryVO" >
+		
+       SELECT 
+            a.NTT_ID AS id,
+            a.NTT_SJ AS name
+			FROM
+				LETTNBBS a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID 
+			WHERE
+				a.USE_AT = 'Y' and a.NTT_ID IS NOT NULL AND a.NTT_SJ IS NOT NULL
+				
+			AND
+				a.BBS_ID = #{bbsId}
+			ORDER BY NTT_ID DESC
+	</select>	
+	
+	<select id="selectFisheryData"  parameterType="egovframework.camera.service.FisheryVO" resultMap="fisheryList">
+		
+       SELECT 
+            a.id AS id,
+            DATE_FORMAT(STR_TO_DATE(a.tempdate, '%Y%m%d'), '%Y-%m-%d') AS tempdate,
+            a.temp AS temp
+			FROM
+				fishFarmTempDayje a
+			WHERE
+		        a.tempdate BETWEEN 
+        			REPLACE(REPLACE(#{selectedDateFrom}, '-', ''), '/', '') 
+        		AND 
+        			REPLACE(REPLACE(#{selectedDate}, '-', ''), '/', '')		
+       			AND
+				a.id = #{fisheryId}
+			ORDER BY tempdate
+	</select>	
+	
+</mapper>

@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EstManageDAO">
+
+
+	<resultMap id="boardList" type="egovframework.camera.service.BoardVO">
+		<result property="bbsId" column="BBS_ID"/>
+		<result property="nttId" column="NTT_ID"/>
+		<result property="nttSj" column="NTT_SJ"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="inqireCo" column="RDCNT"/>
+		<result property="parnts" column="PARNTSCTT_NO"/>
+		<result property="replyAt" column="ANSWER_AT"/>		
+		<result property="replyLc" column="ANSWER_LC"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="staCnt" column="STA_CNT"/>
+		<result property="finCnt" column="FIN_CNT"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+		<result property="ntceBgnde" column="NTCE_BGNDE"/>
+	</resultMap>
+
+	<resultMap id="boardDetail" type="egovframework.camera.service.BoardVO">
+		<result property="bbsId" column="BBS_ID"/>
+		<result property="nttId" column="NTT_ID"/>
+		<result property="nttSj" column="NTT_SJ"/>	
+		<result property="ntcrId" column="NTCR_ID"/>
+		<result property="ntcrNm" column="NTCR_NM"/>
+		<result property="nttNo" column="NTT_NO"/>
+		<result property="nttCn" column="NTT_CN"/>
+		<result property="bbsTyACode" column="BBS_TY_A_CODE"/>
+		<result property="bbsTyBCode" column="BBS_TY_B_CODE"/>
+		<result property="bbsTyCCode" column="BBS_TY_C_CODE"/>
+		<result property="bbsTyDCode" column="BBS_TY_D_CODE"/>
+		<result property="bbsTyECode" column="BBS_TY_E_CODE"/>
+		<result property="bbsTyFCode" column="BBS_TY_F_CODE"/>
+		<result property="bbsTyGCode" column="BBS_TY_G_CODE"/>
+		<result property="bbsTyHCode" column="BBS_TY_H_CODE"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="ntceBgnde" column="NTCE_BGNDE"/>
+		<result property="ntceEndde" column="NTCE_ENDDE"/>
+		<result property="inqireCo" column="RDCNT"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+		<result property="parnts" column="PARNTSCTT_NO"/>
+		<result property="replyAt" column="ANSWER_AT"/>		
+		<result property="replyLc" column="ANSWER_LC"/>
+		<result property="sortOrdr" column="SORT_ORDR"/>
+		<result property="bbsAttrbCode" column="BBS_ATTRB_CODE"/>
+		<result property="replyPosblAt" column="REPLY_POSBL_AT"/>
+		<result property="fileAtchPosblAt" column="FILE_ATCH_POSBL_AT"/>
+		<result property="posblAtchFileNumber" column="ATCH_POSBL_FILE_NUMBER"/>
+		<result property="bbsNm" column="BBS_NM"/>
+	</resultMap>
+
+	<resultMap id="sortList" type="egovframework.camera.service.BoardVO">
+		<result property="bbsId" column="BBS_ID"/>
+		<result property="nttId" column="NTT_ID"/>
+		<result property="sortOrdr" column="SORT_ORDR"/>
+		<result property="parnts" column="PARNTSCTT_NO"/>
+		<result property="nttNo" column="NTT_NO"/>		
+	</resultMap>
+	
+	<resultMap id="csvList" type="egovframework.camera.service.BoardVO">
+	<result property="dtlId" column="DTL_ID"/>
+	<result property="nttId" column="NTT_ID"/>
+	<result property="bbsId" column="BBS_ID"/>
+	<result property="zipCd" column="ZIP_CD"/>
+	<result property="roadBaseAd" column="ROAD_BASE_AD"/>		
+	<result property="roadBaseA" column="ROAD_BASE_A"/>		
+	<result property="roadBaseB" column="ROAD_BASE_B"/>		
+	<result property="roadBaseC" column="ROAD_BASE_C"/>		
+	<result property="roadBaseD" column="ROAD_BASE_D"/>		
+	<result property="prclAdre" column="PRCL_ADRE"/>		
+	<result property="state" column="STATE"/>		
+	<result property="adresStat" column="ADRES_STAT"/>		
+	<result property="frstRegisterId" column="FRST_REGISTER_ID"/>		
+	<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+	<result property="modify" column="MODIFY"/>		
+	<result property="del" column="DEL"/>		
+	</resultMap>
+
+ 	<select id="selectMaxNttId" resultType="java.lang.Long">
+ 		
+			SELECT IFNULL(MAX(NTT_ID),0)+1 AS NTT_ID  FROM ESTRGS
+ 		
+ 	</select>
+ 	
+	<select id="selectBoardArticleList" parameterType="egovframework.camera.service.BoardVO" resultMap="boardList">
+		
+		SELECT a.NTT_ID, a.NTT_SJ, IFNULL(a.LAST_UPDUSR_ID, a.FRST_REGISTER_ID) as FRST_REGISTER_ID,
+			DATE_FORMAT(a.FRST_REGIST_PNTTM, '%Y-%m-%d') as FRST_REGIST_PNTTM, a.RDCNT, a.USE_AT, a.BBS_ID,
+			(SELECT COUNT(*) FROM ESTRGSDTL WHERE A.NTT_ID = NTT_ID AND A.BBS_ID = #{bbsId}) as STA_CNT,
+			(SELECT COUNT(*) FROM ESTRGSDTL WHERE A.NTT_ID = NTT_ID AND A.BBS_ID = #{bbsId} AND STATE = '1') as FIN_CNT
+			FROM
+				ESTRGS a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID 
+			WHERE
+				a.USE_AT = 'Y'
+			AND
+				a.BBS_ID = #{bbsId}
+		
+			<if test="searchCnd == 0">
+					AND a.NTT_SJ LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>
+			<if test="searchCnd == 1">
+					AND IFNULL(a.LAST_UPDUSR_ID, a.FRST_REGISTER_ID) LIKE CONCAT ('%', #{searchWrd},'%') 
+			</if>				
+					
+			ORDER BY NTT_ID DESC
+			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+					
+	</select>	
+	
+	<select id="selectBoardArticleListCnt" parameterType="egovframework.camera.service.BoardVO" resultType="java.lang.Integer">
+		
+			SELECT
+				COUNT(a.NTT_ID)
+			FROM
+				ESTRGS a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID 
+			WHERE
+				a.USE_AT = 'Y'
+			AND
+				a.BBS_ID = #{bbsId}
+		
+			<if test="searchCnd == 0">
+					AND a.NTT_SJ LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>
+			<if test="searchCnd == 1">
+					AND	IFNULL(a.LAST_UPDUSR_ID, a.FRST_REGISTER_ID) LIKE CONCAT ('%', #{searchWrd},'%') 	
+			</if>			
+	</select>	
+	
+	<select id="selectBoardArticle" parameterType="egovframework.camera.service.BoardVO" resultMap="boardDetail">
+		
+			SELECT
+				a.NTT_SJ, a.NTCR_ID, a.NTT_NO, 
+				a.BBS_TY_A_CODE as BBS_TY_A_CODE, a.BBS_TY_B_CODE  as BBS_TY_B_CODE, 
+				a.BBS_TY_C_CODE as BBS_TY_C_CODE, a.BBS_TY_D_CODE  as BBS_TY_D_CODE, 
+				a.BBS_TY_E_CODE as BBS_TY_E_CODE, a.BBS_TY_F_CODE  as BBS_TY_F_CODE, 
+				a.NTT_CN, a.ATCH_FILE_ID, 
+				IFNULL(a.LAST_UPDUSR_ID, a.FRST_REGISTER_ID) as FRST_REGISTER_ID,
+				DATE_FORMAT(a.FRST_REGIST_PNTTM, '%Y-%m-%d') as FRST_REGIST_PNTTM,
+				a.USE_AT, a.RDCNT, a.BBS_ID, a.NTT_ID,
+				c.BBS_TY_CODE, c.BBS_ATTRB_CODE, c.REPLY_POSBL_AT, 
+				c.FILE_ATCH_POSBL_AT, c.ATCH_POSBL_FILE_NUMBER, c.BBS_NM
+			FROM
+				ESTRGS a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b 
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID 
+			LEFT OUTER JOIN 
+				LETTNBBSMASTER c
+			ON a.BBS_ID = c.BBS_ID			
+			WHERE
+				a.USE_AT = 'Y'
+			AND
+				a.BBS_ID = #{bbsId}	
+			AND
+				a.NTT_ID = #{nttId}	
+						
+	</select> 
+	
+	<select id="selectBoardArticle2" parameterType="egovframework.camera.service.BoardVO" resultMap="boardDetail">
+		
+			SELECT
+				a.NTT_SJ, a.NTCR_ID, a.NTT_NO,
+				a.BBS_TY_A_CODE as BBS_TY_A_CODE, a.BBS_TY_B_CODE  as BBS_TY_B_CODE, 
+				a.BBS_TY_C_CODE as BBS_TY_C_CODE, a.BBS_TY_D_CODE  as BBS_TY_D_CODE, 
+				a.BBS_TY_E_CODE as BBS_TY_E_CODE, a.BBS_TY_F_CODE  as BBS_TY_F_CODE, 
+				a.NTT_CN, a.ATCH_FILE_ID, a.FRST_REGISTER_ID, b.USER_NM as FRST_REGISTER_NM,
+				DATE_FORMAT(a.FRST_REGIST_PNTTM, '%Y-%m-%d') as FRST_REGIST_PNTTM,
+				a.USE_AT, a.RDCNT, a.BBS_ID, a.NTT_ID, a.SORT_ORDR,
+				c.BBS_TY_CODE, c.BBS_ATTRB_CODE, c.REPLY_POSBL_AT, 
+				c.FILE_ATCH_POSBL_AT, c.ATCH_POSBL_FILE_NUMBER, c.BBS_NM
+			FROM
+				ESTRGS a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b 
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID 
+			LEFT OUTER JOIN 
+				LETTNBBSMASTER c
+			ON a.BBS_ID = c.BBS_ID			
+			WHERE
+				a.USE_AT = 'Y'
+			AND
+				a.BBS_ID = #{bbsId}	
+			AND
+				a.NTT_ID = #{nttId}	
+						
+	</select> 
+
+<!-- excel 파일명 검색시 사용 	 -->
+ 	<select id="selectOrignlFileNm" parameterType="egovframework.camera.service.BoardVO" resultType="java.lang.String">
+ 		
+			SELECT orignl_file_nm AS orignlFileNm FROM lettnfiledetail
+			WHERE atch_file_id = #{atchFileId}
+ 		
+ 	</select>
+ 	
+	<insert id="insertBoardArticle" parameterType="egovframework.camera.service.Board">
+		<selectKey keyProperty="nttId" resultType="java.lang.Long" order="BEFORE">
+			SELECT IFNULL(MAX(NTT_ID),0)+1 AS NTT_ID FROM ESTRGS
+			WHERE BBS_ID = #{bbsId}
+		</selectKey>
+		
+			INSERT INTO ESTRGS
+			(NTT_ID, BBS_ID, NTT_SJ, RDCNT, BBS_TY_A_CODE, BBS_TY_B_CODE, BBS_TY_C_CODE,
+			BBS_TY_D_CODE, BBS_TY_E_CODE, BBS_TY_F_CODE, BBS_TY_G_CODE, BBS_TY_H_CODE,
+			NTT_CN, ATCH_FILE_ID,
+			FRST_REGISTER_ID, FRST_REGIST_PNTTM, USE_AT
+			 )
+			VALUES
+			( #{nttId}, #{bbsId}, #{nttSj}, #{inqireCo}, #{bbsTyACode}, #{bbsTyBCode}, #{bbsTyCCode},
+			#{bbsTyDCode}, #{bbsTyECode}, #{bbsTyFCode}, #{bbsTyGCode}, #{bbsTyHCode}, #{nttCn},
+			#{atchFileId}, #{frstRegisterId}, SYSDATE(), 'Y'
+			 )			
+		
+	</insert>
+	
+ 	<update id="updateBoardArticle" parameterType="egovframework.camera.service.Board">
+			UPDATE ESTRGS SET 
+				NTT_SJ = #{nttSj},
+				BBS_TY_A_CODE = #{bbsTyACode},BBS_TY_B_CODE = #{bbsTyBCode},BBS_TY_C_CODE = #{bbsTyCCode},
+				BBS_TY_D_CODE = #{bbsTyDCode},BBS_TY_E_CODE = #{bbsTyECode},BBS_TY_F_CODE = #{bbsTyFCode},
+				BBS_TY_G_CODE = #{bbsTyGCode},BBS_TY_H_CODE = #{bbsTyHCode},
+				NTT_CN = #{nttCn}, 
+				ATCH_FILE_ID = #{atchFileId},
+				LAST_UPDUSR_ID = #{lastUpdusrId},
+				LAST_UPDT_PNTTM = SYSDATE()
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+ 		
+ 	</update>
+ 	
+ 	<delete id="deleteBoardArticleDtl" parameterType="egovframework.camera.service.Board">
+ 		
+			DELETE FROM ESTRGSDTL	
+			WHERE BBS_ID = #{bbsId}		
+			AND NTT_ID = #{nttId}
+ 		
+ 	</delete>
+ 	
+ 	<select id="selectMaxInqireCo" parameterType="egovframework.camera.service.BoardVO" resultType="java.lang.Integer">
+ 		
+			SELECT IFNULL(MAX(RDCNT),0)+1 AS RDCNT FROM ESTRGS
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+ 		
+ 	</select>
+ 	
+ 	<update id="deleteBoardArticle" parameterType="egovframework.camera.service.Board">
+ 		
+			UPDATE ESTRGS SET 
+				NTT_SJ = #{nttSj},
+				USE_AT = 'N',
+				LAST_UPDUSR_ID = #{lastUpdusrId},
+				LAST_UPDT_PNTTM = SYSDATE()
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+ 		
+ 	</update>
+ 	
+ 	<update id="updateInqireCo" parameterType="egovframework.camera.service.BoardVO">
+ 		
+			UPDATE ESTRGS SET 
+				RDCNT = #{inqireCo}
+<!-- 				,LAST_UPDT_PNTTM = SYSDATE() -->
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+ 		
+ 	</update>
+ 	
+ 	<update id="updateJusoCvtDetail" parameterType="egovframework.camera.service.BoardVO">
+ 		
+ 			UPDATE ESTRGSDTL SET 
+				ZIP_CD = #{zipCd},
+				ROAD_BASE_AD = #{roadBaseAd},
+				ROAD_BASE_A = #{roadBaseA},
+				ROAD_BASE_B = #{roadBaseB},
+				PRCL_ADRE = #{prclAdre},
+				ADRES_STAT = #{adresStat},
+				FRST_REGISTER_ID = #{frstRegisterId},
+				FRST_REGIST_PNTTM = SYSDATE()
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+			AND
+				DTL_ID = #{dtlId}		
+ 		
+ 	</update>
+ 	
+ 	<update id="updateJusoCvtDetailNothing" parameterType="egovframework.camera.service.BoardVO">
+ 		
+			UPDATE ESTRGSDTL SET 
+				ADRES_STAT = #{adresStat},
+				FRST_REGISTER_ID = #{frstRegisterId},
+				FRST_REGIST_PNTTM = SYSDATE()
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+			AND
+				DTL_ID = #{dtlId}	
+ 		
+ 	</update>
+ 	
+	<insert id="insertJuso" parameterType="egovframework.camera.service.BoardVO">
+			
+			INSERT INTO ESTRGSDTL
+			( DTL_ID, NTT_ID , BBS_ID ,ZIP_CD ,ROAD_BASE_AD ,
+				ROAD_BASE_A ,ROAD_BASE_B ,ROAD_BASE_C ,ROAD_BASE_D ,
+				PRCL_ADRE ,STATE ,ADRES_STAT ,FRST_REGISTER_ID ,FRST_REGIST_PNTTM,
+				MODIFY,DEL
+			)
+			VALUES
+			( #{dtlId},#{nttId},#{bbsId},#{zipCd},#{roadBaseAd},
+				#{roadBaseA},#{roadBaseB},#{roadBaseC},#{roadBaseD},
+				#{prclAdre},#{state},#{adresStat},#{frstRegisterId},SYSDATE(),
+				#{modify},#{del}
+			)
+			
+	</insert>
+	
+	<select id="selectBoardArticleListJuso" parameterType="egovframework.camera.service.BoardVO" resultType="egovframework.camera.service.BoardVO">
+			SELECT
+				a.NTT_ID as nttId, a.DTL_ID as dtlId, a.BBS_ID as bbsId, a.ZIP_CD as zipCd, a.ROAD_BASE_AD as roadBaseAd, a.ROAD_BASE_A as roadBaseA, a.ROAD_BASE_B as roadBaseB, a.ROAD_BASE_C as roadBaseC, a.ROAD_BASE_D as roadBaseD,
+				a.PRCL_ADRE as prclAdre, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM032' AND CODE = a.STATE ) as state, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM033' AND CODE = a.ADRES_STAT ) as adresStat,  a.FRST_REGISTER_ID as frstRegisterId,
+				a.ERR_REASON as errReason, DATE_FORMAT(a.FRST_REGIST_PNTTM, '%Y-%m-%d') as frstRegisterPnttm,
+				(SELECT COUNT(*) FROM ESTRGSDTL WHERE A.NTT_ID = NTT_ID AND A.BBS_ID = #{bbsId}) as staCnt,
+				(SELECT COUNT(*) FROM ESTRGSDTL WHERE A.NTT_ID = NTT_ID AND A.BBS_ID = #{bbsId} AND STATE = '1') as finCnt,
+				(SELECT COUNT(*) FROM ESTRGSDTL WHERE A.NTT_ID = NTT_ID AND A.BBS_ID = #{bbsId} AND STATE = '2') as pasCnt,
+				(SELECT COUNT(*) FROM ESTRGSDTL WHERE A.NTT_ID = NTT_ID AND A.BBS_ID = #{bbsId} AND STATE = '3') as errCnt,
+				a.MODIFY as modify, a.DEL as del
+			FROM
+				ESTRGSDTL a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.USER_NM 
+			WHERE
+				a.BBS_ID = #{bbsId}
+			AND 
+				a.NTT_ID = #{nttId}	
+			
+			ORDER BY DTL_ID DESC 
+			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+ 	</select>
+ 	
+ 	<select id="selectBoardArticleListJusoCnt" parameterType="egovframework.camera.service.BoardVO" resultType="java.lang.Integer">
+			SELECT
+				COUNT(a.NTT_ID)
+			FROM
+				ESTRGSDTL a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.USER_NM
+			WHERE
+				a.BBS_ID = #{bbsId}
+			AND
+				a.NTT_ID = #{nttId}
+				
+	</select>	
+	
+	<select id="selectBoardArticleListJusoDtl" parameterType="egovframework.camera.service.BoardVO" resultType="egovframework.camera.service.BoardVO">
+			SELECT
+				a.NTT_ID as nttId, a.BBS_ID as bbsId, a.ZIP_CD as zipCd, a.ROAD_BASE_AD as roadBaseAd, a.ROAD_BASE_A as roadBaseA, a.ROAD_BASE_B as roadBaseB, a.ROAD_BASE_C as roadBaseC, a.ROAD_BASE_D as roadBaseD,
+				a.PRCL_ADRE as prclAdre, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM032' AND CODE = a.STATE ) as state, ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM033' AND CODE = a.ADRES_STAT ) as adresStat,  a.FRST_REGISTER_ID as frstRegisterId,
+				DATE_FORMAT(a.FRST_REGIST_PNTTM, '%Y-%m-%d') as frstRegisterPnttm,
+				a.MODIFY as modify, a.DEL as del
+			FROM
+				ESTRGSDTL a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.USER_NM 
+			WHERE
+				a.BBS_ID = #{bbsId}
+			AND 
+				a.NTT_ID = #{nttId}	
+			AND
+				a.DTL_ID = #{dtlId}
+				
+			ORDER BY DTL_ID DESC 
+				
+	</select>
+	
+	<!--  주소정제	  -->
+ 
+ 	<select id="selectBoardArticleListJusoDtlCvt" parameterType="egovframework.camera.service.BoardVO" resultType="egovframework.camera.service.BoardVO">
+			SELECT
+				a.NTT_ID as nttId, a.BBS_ID as bbsId, a.DTL_ID as dtlId, a.ZIP_CD as zipCd, a.ROAD_BASE_AD as roadBaseAd, a.ROAD_BASE_A as roadBaseA, a.ROAD_BASE_B as roadBaseB, a.ROAD_BASE_C as roadBaseC, a.ROAD_BASE_D as roadBaseD,
+				a.PRCL_ADRE as prclAdre,
+<!-- 				 ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM032' AND CODE = a.STATE ) as state,  -->
+<!-- 				 ( SELECT CODE_NM FROM LETTCCMMNDETAILCODE WHERE CODE_ID = 'COM033' AND CODE = a.ADRES_STAT ) as adresStat,  -->
+				  a.FRST_REGISTER_ID as frstRegisterId,
+				DATE_FORMAT(a.FRST_REGIST_PNTTM, '%Y-%m-%d') as frstRegisterPnttm,
+				a.MODIFY as modify, a.DEL as del
+			FROM
+				ESTRGSDTL a
+<!-- 			LEFT OUTER JOIN  -->
+<!-- 				COMVNUSERMASTER b -->
+<!-- 			ON a.FRST_REGISTER_ID = b.USER_NM  -->
+			WHERE
+				a.BBS_ID = #{bbsId}
+			AND 
+				a.NTT_ID = #{nttId}	
+				
+			ORDER BY DTL_ID DESC 
+				
+	</select>	
+	
+	<!--주소용 삭제-->
+	<delete id="deleteBoardArticleJuso"  parameterType="egovframework.camera.service.BoardVO">
+		DELETE FROM ESTRGSDTL
+		WHERE 
+			NTT_ID = #{nttId}
+		AND
+			BBS_ID = #{bbsId}
+		AND
+			DTL_ID = #{dtlId}
+	</delete>
+	
+ 	<!--주소용 갱신-->
+  	<update id="updateBoardArticleJuso" parameterType="egovframework.camera.service.BoardVO">
+ 		
+			UPDATE ESTRGSDTL SET 
+				ZIP_CD = #{zipCd},
+				ROAD_BASE_AD = #{roadBaseAd},
+				ROAD_BASE_A = #{roadBaseA},
+				ROAD_BASE_B = #{roadBaseB},
+				ROAD_BASE_C = #{roadBaseC},
+				ROAD_BASE_D = #{roadBaseD},
+				PRCL_ADRE = #{prclAdre},
+				STATE = #{state},
+				FRST_REGISTER_ID = #{frstRegisterId},
+				FRST_REGIST_PNTTM = SYSDATE()
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+			AND
+				DTL_ID = #{dtlId}
+ 		
+ 	</update>
+	
+	<!--전체 발급완료 처리-->
+  	<update id="updateJusoCompDetail" parameterType="egovframework.camera.service.BoardVO">
+ 		
+			UPDATE ESTRGSDTL SET 
+				STATE = #{state},
+				FRST_REGISTER_ID = #{frstRegisterId},
+				FRST_REGIST_PNTTM = SYSDATE()
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+ 		
+ 	</update>
+	
+	<!--선택 미발급 처리-->
+  	<update id="updateJusoCompDetailDtl" parameterType="egovframework.camera.service.BoardVO">
+ 		
+			UPDATE ESTRGSDTL SET 
+				STATE = #{state},
+				FRST_REGISTER_ID = #{frstRegisterId},
+				FRST_REGIST_PNTTM = SYSDATE()
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+			AND DTL_ID = #{dtlId}
+ 		
+ 	</update>
+	
+	 	<select id="jusoModDetailCnt" parameterType="egovframework.camera.service.BoardVO" resultType="java.lang.Integer">
+			SELECT
+				COUNT(a.NTT_ID)
+			FROM
+				ESTRGSDTL a
+			LEFT OUTER JOIN 
+				COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.USER_NM
+			WHERE
+				a.BBS_ID = #{bbsId}
+			AND
+				a.NTT_ID = #{nttId}
+			AND
+				a.DTL_ID = #{dtlId}
+				
+	</select>	
+	
+</mapper>

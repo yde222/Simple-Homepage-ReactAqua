@@ -1,0 +1,12 @@
+{
+    "fisheryList": "양식장 목록",
+    "selectedFishery": "선택된 양식장",
+    "fisheryData": "양식장 데이터",
+    "weekly": "주(일단위)",
+    "monthly": "월(일단위)",
+    "quarterly": "분기(일단위)",
+    "selectDate": "날짜 선택",
+    "noFisheries": "사용 가능한 양식장이 없습니다",
+    "noChartData": "사용 가능한 차트 데이터가 없습니다"
+}
+

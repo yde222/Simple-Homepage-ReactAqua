@@ -1,0 +1,12 @@
+ {
+ "tit_1" : "로그인",
+ "tit_2" : "회원가입",
+ "name" : "회원명",
+ "sendCodeButton" : "인증번호전송",
+ "email" : "아이디(이메일)",
+ "password" : "비밀번호",
+ "passwordCnsr":"비밀번호 확인",
+ "certificationNum" : "인증번호(6자리)",
+ "ihidNum" : "연락처",
+ "SignUpbtn" : "회원가입"
+ }

@@ -1,0 +1,12 @@
+ {
+ "tit_1" : "로그인",
+ "tit_2" : "비밀번호, 회원명, 전화번호 변경",
+ "name" : "회원명",
+ "sendCodeButton" : "인증번호 전송",
+ "email" : "아이디(이메일)",
+ "password" : "새 비밀번호", 
+ "passwordCnsr":"새 비밀번호확인",
+ "certificationNum" : "인증번호전송(6자리)",
+ "ihidNum" : "전화번호",
+ "SignUpbtn" : "비밀번호변경"
+ }

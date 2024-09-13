@@ -1,0 +1,12 @@
+{
+    "fisheryList": "Fishery List",
+    "selectedFishery": "Selected Fishery",
+    "fisheryData":"Fishery Data",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "quarterly":  "Quarterly",
+    "selectDate": "Select Date",
+    "noFisheries":"No fisheries available",
+    "noChartData": "No chart data available"
+}
+
